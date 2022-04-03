@@ -45,37 +45,12 @@ export function useApp(options = { defaultValues: [] }) {
 
   form.classList.add("boules");
 
-  let selected = new Set(options.defaultValues);
-
   const compute = () => {
     result.innerHTML = "";
     result.append(computeResults(Array.from(selected.values())));
   };
 
   //  insert boules
-  new Array(50)
-    .fill()
-    .map((_, i) => i + 1)
-    .map((boule) => {
-      const button = document.createElement("button");
-      button.innerText = String(boule);
-
-      button.onclick = () => {
-        const checked = selected.has(boule);
-
-        if (checked) {
-          selected.delete(boule);
-          button.classList.remove("checked");
-        } else if (selected.size !== 5) {
-          selected.add(boule);
-          button.classList.add("checked");
-        }
-      };
-
-      if (selected.has(boule)) button.classList.add("checked");
-
-      form.append(button);
-    });
 
   app.append(form);
 

@@ -33,35 +33,6 @@ function compute() {
     Number(boule4.value),
     Number(boule5.value),
   ];
-
-  const description = document.createElement("p");
-  description.innerHTML = "Avec ce tirage vous auriez:";
-  result.append(description);
-
-  const list = document.createElement("ul");
-
-  const appendItem = (text) => {
-    const li = document.createElement("li");
-    li.innerHTML = text;
-    list.append(li);
-  };
-
-  const result5 = data.filter((tirage) => tirage.boules.every((boule) => boules.includes(boule)));
-
-  result5.forEach(({ date }) => appendItem(`Gagné le Loto le ${date}!!!`));
-
-  const result4 = data
-    .filter((tirage) => tirage.boules.filter((boule) => boules.includes(boule)).length === 4)
-    .filter((tirage) => !result5.map(({ date }) => date).includes(tirage.date));
-
-  result4.forEach(({ date }) => appendItem(`Auriez eu 4 numéro gagants le ${date}`));
-
-  result.append(list);
-
-  const cost = document.createElement("p");
-
-  cost.innerHTML = `Au prix de 2€ la grille, vous auriez dépensé ${data.length * 2} €`;
-  result.append(cost);
 }
 
 boule1.onchange = compute;
