@@ -1,4 +1,4 @@
-window.data = [
+export const tirages = [
   { date: "16-09-23", boules: [14, 39, 42, 49, 16], etoiles: [9, 3] },
   { date: "2016-09-20", boules: [45, 41, 4, 1, 10], etoiles: [9, 6] },
   { date: "2016-09-16", boules: [32, 5, 22, 8, 14], etoiles: [2, 11] },
