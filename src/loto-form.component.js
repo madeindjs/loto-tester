@@ -4,9 +4,20 @@ import("./loto-form.component.css");
 
 export class LotoFormComponent extends HTMLElement {
   connectedCallback() {
-    let selected = new Set();
+    const state = {
+      boules: new Set(),
+      extra: new Set(),
+    };
 
-    new Array(50)
+    const title = document.createElement("h2");
+    title.innerText = "Sélectionnez vos numéros";
+
+    this.append(title);
+
+    const boules = document.createElement("div");
+    boules.classList.add("boules");
+
+    new Array(49)
       .fill()
       .map((_, i) => i + 1)
       .map((boule) => {
@@ -14,28 +25,75 @@ export class LotoFormComponent extends HTMLElement {
         button.innerText = String(boule);
 
         button.onclick = () => {
-          const checked = selected.has(boule);
+          const checked = state.boules.has(boule);
 
           if (checked) {
-            selected.delete(boule);
+            state.boules.delete(boule);
             button.classList.remove("checked");
-          } else if (selected.size !== 5) {
-            selected.add(boule);
+          } else if (state.boules.size !== 5) {
+            state.boules.add(boule);
             button.classList.add("checked");
           }
 
           this.dispatchEvent(
             new CustomEvent("change", {
-              detail: Array.from(selected.values()),
+              detail: state,
               bubbles: true,
               composed: false,
             })
           );
         };
 
-        if (selected.has(boule)) button.classList.add("checked");
+        if (state.boules.has(boule)) button.classList.add("checked");
 
-        this.append(button);
+        boules.append(button);
       });
+
+    this.append(boules);
+
+    // extra
+
+    const extraDescription = document.createElement("p");
+    extraDescription.innerText = "Numéro chance";
+    this.append(extraDescription);
+
+    const extra = document.createElement("div");
+    extra.classList.add("extra");
+
+    // TODO refactor this
+    new Array(10)
+      .fill()
+      .map((_, i) => i + 1)
+      .map((boule) => {
+        const button = document.createElement("button");
+        button.innerText = String(boule);
+
+        button.onclick = () => {
+          const checked = state.extra.has(boule);
+
+          if (checked) {
+            state.extra.delete(boule);
+            button.classList.remove("checked");
+          } else if (state.extra.size !== 1) {
+            // TODO set number from props
+            state.extra.add(boule);
+            button.classList.add("checked");
+          }
+
+          this.dispatchEvent(
+            new CustomEvent("change", {
+              detail: state,
+              bubbles: true,
+              composed: false,
+            })
+          );
+        };
+
+        if (state.extra.has(boule)) button.classList.add("checked");
+
+        extra.append(button);
+      });
+
+    this.append(extra);
   }
 }

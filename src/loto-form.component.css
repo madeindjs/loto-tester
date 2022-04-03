@@ -1,22 +1,47 @@
 loto-form {
+  background-color: #dedede;
+  width: 17rem;
+  padding: 1rem;
+}
+
+loto-form .boules,
+loto-form .extra {
   display: grid;
-  grid-template-rows: repeat(10, 2rem);
-  grid-template-columns: repeat(5, 2rem);
-  justify-content: center;
+  grid-template-columns: repeat(7, 2rem);
+  /* justify-content: center; */
   gap: 0.5rem;
 }
 
-loto-form input {
-  /* display: none; */
-  width: 1rem;
+loto-form .boules {
+  grid-template-rows: repeat(7, 2rem);
+}
+
+loto-form .extra {
+  grid-template-rows: repeat(2, 2rem);
 }
 
 loto-form button {
   border-radius: 50%;
-  border: 1px solid black;
+  font-weight: bold;
+  border: none;
+  background-color: white;
+  box-shadow: 0 5px 10px 0 hsla(0, 0%, 74.9%, 0.5);
 }
 
-loto-form button.checked {
-  background-color: darkblue;
+logo-form .boules button {
+  color: #44b3d3;
+}
+
+loto-form .boules button.checked {
+  background-color: #44b3d3;
+  color: white;
+}
+
+logo-form .extra button {
+  color: #e44d5f;
+}
+
+loto-form .extra button.checked {
+  background-color: #e44d5f;
   color: white;
 }

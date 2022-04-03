@@ -1,13 +1,13 @@
 // @ts-check
-export class SummaryComponent extends HTMLElement {
+export class LotoSummaryComponent extends HTMLElement {
   _tirages;
 
   static get observedAttributes() {
-    return ["boules"];
+    return ["boules", "extra"];
   }
 
   async connectedCallback() {
-    this._tirages = await import("./data/euromilion").then((m) => m.tirages);
+    this._tirages = await import("./data/loto").then((m) => m.tirages);
     this.render();
   }
 
@@ -18,6 +18,35 @@ export class SummaryComponent extends HTMLElement {
   render() {
     this.innerHTML = "";
 
+    const title = document.createElement("h2");
+    title.innerText = "Résultat";
+    this.append(title);
+
+    const boulesDescriptions = document.createElement("p");
+    boulesDescriptions.innerText = "Vos numéros:";
+    this.append(boulesDescriptions);
+
+    const numeros = document.createElement("ul");
+
+    const boules = this.getAttribute("boules")?.split(",").map(Number) ?? [];
+    const extra = this.getAttribute("extra")?.split(",").map(Number) ?? [];
+
+    boules.forEach((boule) => {
+      const item = document.createElement("li");
+      item.classList.add("boule");
+      item.innerText = String(boule);
+      numeros.append(item);
+    });
+
+    extra.forEach((boule) => {
+      const item = document.createElement("li");
+      item.classList.add("extra");
+      item.innerText = String(boule);
+      numeros.append(item);
+    });
+
+    this.append(numeros);
+
     if (!this.getAttribute("boules")) {
       const p = document.createElement("p");
       p.setAttribute("role", "alert");
@@ -25,8 +54,6 @@ export class SummaryComponent extends HTMLElement {
       this.append(p);
       return;
     }
-
-    const boules = this.getAttribute("boules").split(",").map(Number);
 
     const description = document.createElement("p");
     description.innerHTML = "Avec ce tirage vous auriez:";
