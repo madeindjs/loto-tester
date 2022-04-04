@@ -1,0 +1,12 @@
+.loto-form {
+  background-color: #dedede;
+  width: 17rem;
+  padding: 1rem;
+}
+
+.boules {
+  display: grid;
+  grid-template-columns: repeat(7, 2rem);
+  /* justify-content: center; */
+  gap: 0.5rem;
+}
