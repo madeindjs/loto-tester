@@ -8,8 +8,8 @@ import { Games } from '../../models';
   shadow: true,
 })
 export class AppRoot implements ComponentInterface {
-  @State() boules: number[] = [];
-  @State() extras: number[] = [];
+  @State() boules: number[] = [27, 38, 42, 44, 46];
+  @State() extras: number[] = [1];
   @State() game: Games = Games.Loto;
 
   get nbBoules(): number {
@@ -54,6 +54,8 @@ export class AppRoot implements ComponentInterface {
             game={this.game}
             onBouleDelete={event => this.onBouleDelete(event)}
             onExtraDelete={event => this.onExtraDelete(event)}
+            nbMaxBoules={this.nbMaxBoules}
+            nbMaxExtras={this.nbMaxExtras}
           />
         </main>
       </div>

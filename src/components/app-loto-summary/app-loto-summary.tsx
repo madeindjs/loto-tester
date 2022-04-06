@@ -1,23 +1,80 @@
-import { Component, ComponentInterface, Event, EventEmitter, h, Prop } from '@stencil/core';
-import { Games } from '../../models';
+import { Component, ComponentInterface, Event, EventEmitter, getAssetPath, h, Prop, State, Watch } from '@stencil/core';
+import { GameResult, Games, GameWin } from '../../models';
+import { formattedDate } from '../../utils';
 
 @Component({
   tag: 'app-loto-summary',
   styleUrl: 'app-loto-summary.css',
   shadow: true,
+  assetsDirs: ['assets'],
 })
 export class AppLotoSummary implements ComponentInterface {
   @Prop() boules: number[] = [];
   @Prop() extras: number[] = [];
   @Prop() game: Games;
+  @Prop() nbMaxBoules: number;
+  @Prop() nbMaxExtras: number;
 
   @Event() bouleDelete: EventEmitter<number>;
   @Event() extraDelete: EventEmitter<number>;
+
+  @State() loading = true;
+
+  @State() gameResults: GameResult[];
+
+  componentWillLoad(): void | Promise<void> {
+    this.loadData();
+  }
+
+  @Watch('game')
+  onGameChange() {
+    this.loadData();
+  }
+
+  async loadData() {
+    if (!this.game) return;
+
+    this.loading = true;
+
+    const res = await fetch(getAssetPath(`assets/${this.game}.json`));
+    const gameResults = await res.json();
+    gameResults.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+
+    this.gameResults = gameResults;
+
+    this.loading = false;
+  }
+
+  computeGameWins(): GameWin[] {
+    const results: GameWin[] = [];
+
+    for (const gameResult of this.gameResults) {
+      const boulesMatch = gameResult.boules.filter(b => this.boules.includes(b));
+      const missingBoules = gameResult.boules.filter(b => !boulesMatch.includes(b));
+
+      const extrasMatch = gameResult.extras.filter(b => this.extras.includes(b));
+      const missingExtras = gameResult.extras.filter(b => !extrasMatch.includes(b));
+
+      if (missingBoules.length + missingExtras.length < 3) {
+        results.push({ result: gameResult, missingBoules, missingExtras: missingExtras });
+      }
+    }
+
+    results.sort((a, b) => new Date(b.result.date).getTime() - new Date(a.result.date).getTime());
+
+    return results;
+  }
 
   render() {
     if (!this.game) {
       return <p>Sélectionnez un type de jeu</p>;
     }
+
+    if (this.loading) {
+      return <p aria-busy="true">Chargement des données pour {this.game}</p>;
+    }
+
+    const gameWins = this.computeGameWins();
 
     return (
       <div class="loto-summary">
@@ -25,12 +82,28 @@ export class AppLotoSummary implements ComponentInterface {
         <p>Vous avez joué ces nombres:</p>
         <div class="boules">
           {this.boules.map(boule => (
-            <app-boule boule number={boule} checked={this.boules.includes(boule)} onToggle={() => this.bouleDelete.emit(boule)} />
+            <app-boule boule number={boule} onToggle={() => this.bouleDelete.emit(boule)} checked />
           ))}
           {this.extras.map(extra => (
-            <app-boule extra number={extra} checked={this.extras.includes(extra)} onToggle={() => this.extraDelete.emit(extra)} />
+            <app-boule extra number={extra} onToggle={() => this.extraDelete.emit(extra)} checked />
           ))}
         </div>
+        {gameWins.length === 0 && <p>Vous n'auriez rien gagné avec cette sélection. essayez autre chose</p>}
+        {gameWins.length !== 0 && (
+          <div class="results">
+            <p>
+              Voici les gains générés par cette grille sur la période de {formattedDate(this.gameResults[0].date)} à{' '}
+              {formattedDate(this.gameResults[this.gameResults.length - 1].date)}
+            </p>
+            <ul>
+              {gameWins.map(win => (
+                <li>
+                  <app-game-win gameWin={win} />
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
     );
   }

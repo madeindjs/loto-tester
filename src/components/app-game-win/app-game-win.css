@@ -1,0 +1,18 @@
+.game-win {
+  padding: 0.5rem;
+  display: grid;
+  grid-template-columns: auto auto;
+  /* background-color: antiquewhite; */
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.game-win__date {
+  text-align: right;
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+.full {
+  border: 2px solid rgb(255, 215, 0);
+}

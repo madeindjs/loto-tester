@@ -11,6 +11,10 @@ button {
   cursor: pointer;
 }
 
+button.disabled {
+  cursor: initial;
+}
+
 button.boule {
   color: #44b3d3;
 }

@@ -1,6 +1,6 @@
 export enum Games {
   Loto = 'loto',
-  EuroMillion = 'euroMillion',
+  EuroMillion = 'euromillion',
 }
 
 export interface GameConfiguration {
@@ -8,4 +8,16 @@ export interface GameConfiguration {
   nbExtras: number;
   nbMaxBoules: number;
   nbMaxExtras: number;
+}
+
+export interface GameResult {
+  date: string;
+  boules: number[];
+  extras: number[];
+}
+
+export interface GameWin {
+  result: GameResult;
+  missingBoules: number[];
+  missingExtras: number[];
 }

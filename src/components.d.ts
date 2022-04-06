@@ -5,16 +5,20 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { Games } from "./models";
+import { Games, GameWin } from "./models";
 export namespace Components {
     interface AppBoule {
         "boule": boolean;
         "checked": boolean;
+        "disabled": boolean;
         "extra": boolean;
         "number": number;
     }
     interface AppGameSelector {
         "value": Games;
+    }
+    interface AppGameWin {
+        "gameWin": GameWin;
     }
     interface AppLotoForm {
         "boules": number[];
@@ -28,6 +32,8 @@ export namespace Components {
         "boules": number[];
         "extras": number[];
         "game": Games;
+        "nbMaxBoules": number;
+        "nbMaxExtras": number;
     }
     interface AppRoot {
     }
@@ -44,6 +50,12 @@ declare global {
     var HTMLAppGameSelectorElement: {
         prototype: HTMLAppGameSelectorElement;
         new (): HTMLAppGameSelectorElement;
+    };
+    interface HTMLAppGameWinElement extends Components.AppGameWin, HTMLStencilElement {
+    }
+    var HTMLAppGameWinElement: {
+        prototype: HTMLAppGameWinElement;
+        new (): HTMLAppGameWinElement;
     };
     interface HTMLAppLotoFormElement extends Components.AppLotoForm, HTMLStencilElement {
     }
@@ -66,6 +78,7 @@ declare global {
     interface HTMLElementTagNameMap {
         "app-boule": HTMLAppBouleElement;
         "app-game-selector": HTMLAppGameSelectorElement;
+        "app-game-win": HTMLAppGameWinElement;
         "app-loto-form": HTMLAppLotoFormElement;
         "app-loto-summary": HTMLAppLotoSummaryElement;
         "app-root": HTMLAppRootElement;
@@ -75,6 +88,7 @@ declare namespace LocalJSX {
     interface AppBoule {
         "boule"?: boolean;
         "checked"?: boolean;
+        "disabled"?: boolean;
         "extra"?: boolean;
         "number"?: number;
         "onToggle"?: (event: CustomEvent<void>) => void;
@@ -82,6 +96,9 @@ declare namespace LocalJSX {
     interface AppGameSelector {
         "onUpdate"?: (event: CustomEvent<Games>) => void;
         "value"?: Games;
+    }
+    interface AppGameWin {
+        "gameWin"?: GameWin;
     }
     interface AppLotoForm {
         "boules"?: number[];
@@ -97,6 +114,8 @@ declare namespace LocalJSX {
         "boules"?: number[];
         "extras"?: number[];
         "game"?: Games;
+        "nbMaxBoules"?: number;
+        "nbMaxExtras"?: number;
         "onBouleDelete"?: (event: CustomEvent<number>) => void;
         "onExtraDelete"?: (event: CustomEvent<number>) => void;
     }
@@ -105,6 +124,7 @@ declare namespace LocalJSX {
     interface IntrinsicElements {
         "app-boule": AppBoule;
         "app-game-selector": AppGameSelector;
+        "app-game-win": AppGameWin;
         "app-loto-form": AppLotoForm;
         "app-loto-summary": AppLotoSummary;
         "app-root": AppRoot;
@@ -116,6 +136,7 @@ declare module "@stencil/core" {
         interface IntrinsicElements {
             "app-boule": LocalJSX.AppBoule & JSXBase.HTMLAttributes<HTMLAppBouleElement>;
             "app-game-selector": LocalJSX.AppGameSelector & JSXBase.HTMLAttributes<HTMLAppGameSelectorElement>;
+            "app-game-win": LocalJSX.AppGameWin & JSXBase.HTMLAttributes<HTMLAppGameWinElement>;
             "app-loto-form": LocalJSX.AppLotoForm & JSXBase.HTMLAttributes<HTMLAppLotoFormElement>;
             "app-loto-summary": LocalJSX.AppLotoSummary & JSXBase.HTMLAttributes<HTMLAppLotoSummaryElement>;
             "app-root": LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;
