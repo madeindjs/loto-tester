@@ -17,6 +17,8 @@ export namespace Components {
         "extras": number[];
         "nbBoules": number;
         "nbExtras": number;
+        "nbMaxBoules": number;
+        "nbMaxExtras": number;
     }
     interface AppLotoSummary {
         "boules": number[];
@@ -70,7 +72,10 @@ declare namespace LocalJSX {
         "extras"?: number[];
         "nbBoules"?: number;
         "nbExtras"?: number;
-        "onUpdate"?: (event: CustomEvent<{ boules: number[]; extras: number[] }>) => void;
+        "nbMaxBoules"?: number;
+        "nbMaxExtras"?: number;
+        "onBoulesChange"?: (event: CustomEvent<number[]>) => void;
+        "onExtrasChange"?: (event: CustomEvent<number[]>) => void;
     }
     interface AppLotoSummary {
         "boules"?: number[];

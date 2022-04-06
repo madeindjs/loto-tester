@@ -9,10 +9,14 @@ export class AppLotoForm implements ComponentInterface {
   @Prop() nbBoules: number = 50;
   @Prop() nbExtras: number = 7;
 
+  @Prop() nbMaxBoules: number = 5;
+  @Prop() nbMaxExtras: number = 1;
+
   @Prop({ reflect: true }) boules: number[] = [];
   @Prop({ reflect: true }) extras: number[] = [];
 
-  @Event() update: EventEmitter<{ boules: number[]; extras: number[] }>;
+  @Event() boulesChange: EventEmitter<number[]>;
+  @Event() extrasChange: EventEmitter<number[]>;
 
   render() {
     const boules = new Array(this.nbBoules).fill(undefined).map((_, i) => i + 1);
@@ -24,7 +28,7 @@ export class AppLotoForm implements ComponentInterface {
         <p>Nombres</p>
         <div class="boules">
           {boules.map(boule => (
-            <app-boule boule number={boule} checked={this.boules.includes(boule)} onToggle={() => this.onBouleClick('boules', boule)}></app-boule>
+            <app-boule boule number={boule} checked={this.boules.includes(boule)} onToggle={() => this.onNumberClick('boules', boule)}></app-boule>
           ))}
         </div>
 
@@ -32,30 +36,29 @@ export class AppLotoForm implements ComponentInterface {
 
         <div class="boules">
           {extras.map(extra => (
-            <app-boule extra number={extra} checked={this.extras.includes(extra)} onToggle={() => this.onBouleClick('extras', extra)}></app-boule>
+            <app-boule extra number={extra} checked={this.extras.includes(extra)} onToggle={() => this.onNumberClick('extras', extra)}></app-boule>
           ))}
         </div>
       </div>
     );
   }
 
-  onBouleClick(type: 'boules' | 'extras', number: number) {
-    const state = {
-      boules: [...this.boules],
-      extras: [...this.extras],
-    };
-
-    const array = state[type];
-    const max = type === 'boules' ? this.nbBoules : this.nbExtras;
+  onNumberClick(type: 'boules' | 'extras', number: number) {
+    let array = this[type];
+    const max = type === 'boules' ? this.nbMaxBoules : this.nbMaxExtras;
 
     if (array.includes(number)) {
-      state[type] = array.filter(n => n !== number);
+      array = array.filter(n => n !== number);
     } else {
-      if (array.length === max) array.splice(0);
+      if (array.length >= max) array.splice(0, array.length + 1 - max);
 
-      state[type] = [...array, number];
+      array = [...array, number];
     }
 
-    this.update.emit(state);
+    if (type === 'boules') {
+      this.boulesChange.emit(array);
+    } else {
+      this.extrasChange.emit(array);
+    }
   }
 }
