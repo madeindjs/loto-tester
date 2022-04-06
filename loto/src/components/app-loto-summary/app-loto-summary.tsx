@@ -1,4 +1,5 @@
 import { Component, ComponentInterface, Event, EventEmitter, h, Prop } from '@stencil/core';
+import { Games } from '../../models';
 
 @Component({
   tag: 'app-loto-summary',
@@ -8,11 +9,16 @@ import { Component, ComponentInterface, Event, EventEmitter, h, Prop } from '@st
 export class AppLotoSummary implements ComponentInterface {
   @Prop() boules: number[] = [];
   @Prop() extras: number[] = [];
+  @Prop() game: Games;
 
   @Event() bouleDelete: EventEmitter<number>;
   @Event() extraDelete: EventEmitter<number>;
 
   render() {
+    if (!this.game) {
+      return <p>Sélectionnez un type de jeu</p>;
+    }
+
     return (
       <div class="loto-summary">
         <h2>Résultat</h2>

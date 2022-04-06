@@ -6,11 +6,11 @@ import { Component, ComponentInterface, Event, EventEmitter, h, Prop } from '@st
   shadow: true,
 })
 export class AppLotoForm implements ComponentInterface {
-  @Prop() nbBoules: number = 50;
-  @Prop() nbExtras: number = 7;
+  @Prop() nbBoules: number;
+  @Prop() nbExtras: number;
 
-  @Prop() nbMaxBoules: number = 5;
-  @Prop() nbMaxExtras: number = 1;
+  @Prop() nbMaxBoules: number;
+  @Prop() nbMaxExtras: number;
 
   @Prop({ reflect: true }) boules: number[] = [];
   @Prop({ reflect: true }) extras: number[] = [];
@@ -19,8 +19,8 @@ export class AppLotoForm implements ComponentInterface {
   @Event() extrasChange: EventEmitter<number[]>;
 
   render() {
-    const boules = new Array(this.nbBoules).fill(undefined).map((_, i) => i + 1);
-    const extras = new Array(this.nbExtras).fill(undefined).map((_, i) => i + 1);
+    const boules = new Array(this.nbMaxBoules).fill(undefined).map((_, i) => i + 1);
+    const extras = new Array(this.nbMaxExtras).fill(undefined).map((_, i) => i + 1);
 
     return (
       <div class="loto-form">
@@ -45,7 +45,7 @@ export class AppLotoForm implements ComponentInterface {
 
   onNumberClick(type: 'boules' | 'extras', number: number) {
     let array = this[type];
-    const max = type === 'boules' ? this.nbMaxBoules : this.nbMaxExtras;
+    const max = type === 'boules' ? this.nbBoules : this.nbExtras;
 
     if (array.includes(number)) {
       array = array.filter(n => n !== number);

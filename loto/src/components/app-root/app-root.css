@@ -21,3 +21,7 @@ main {
   gap: 2rem;
   padding: 2rem;
 }
+
+app-game-selector {
+  grid-column: 1 / -1;
+}

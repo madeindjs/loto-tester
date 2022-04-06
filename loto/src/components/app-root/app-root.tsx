@@ -1,4 +1,6 @@
 import { Component, ComponentInterface, h, State } from '@stencil/core';
+import { GAME_CONFIGURATION } from '../../games.conf';
+import { Games } from '../../models';
 
 @Component({
   tag: 'app-root',
@@ -8,6 +10,23 @@ import { Component, ComponentInterface, h, State } from '@stencil/core';
 export class AppRoot implements ComponentInterface {
   @State() boules: number[] = [];
   @State() extras: number[] = [];
+  @State() game: Games = Games.Loto;
+
+  get nbBoules(): number {
+    return GAME_CONFIGURATION[this.game].nbBoules;
+  }
+
+  get nbExtras(): number {
+    return GAME_CONFIGURATION[this.game].nbExtras;
+  }
+
+  get nbMaxBoules(): number {
+    return GAME_CONFIGURATION[this.game].nbMaxBoules;
+  }
+
+  get nbMaxExtras(): number {
+    return GAME_CONFIGURATION[this.game].nbMaxExtras;
+  }
 
   render() {
     return (
@@ -17,18 +36,34 @@ export class AppRoot implements ComponentInterface {
         </header>
 
         <main>
+          <app-game-selector value={this.game} onUpdate={e => this.onGameChange(e)} />
+
           <app-loto-form
             boules={this.boules}
             extras={this.extras}
             onBoulesChange={event => this.onBoulesChange(event)}
             onExtrasChange={event => this.onExtrasChange(event)}
-            nbBoules={49}
-            nbExtras={9}
+            nbBoules={this.nbBoules}
+            nbMaxBoules={this.nbMaxBoules}
+            nbExtras={this.nbExtras}
+            nbMaxExtras={this.nbMaxExtras}
           />
-          <app-loto-summary boules={this.boules} extras={this.extras} onBouleDelete={event => this.onBouleDelete(event)} onExtraDelete={event => this.onExtraDelete(event)} />
+          <app-loto-summary
+            boules={this.boules}
+            extras={this.extras}
+            game={this.game}
+            onBouleDelete={event => this.onBouleDelete(event)}
+            onExtraDelete={event => this.onExtraDelete(event)}
+          />
         </main>
       </div>
     );
+  }
+
+  onGameChange(event: CustomEvent<Games>) {
+    this.game = event.detail;
+
+    this.updateUrl();
   }
 
   onBoulesChange(event: CustomEvent<number[]>) {
