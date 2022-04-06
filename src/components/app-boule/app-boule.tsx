@@ -16,7 +16,7 @@ export class AppBoule implements ComponentInterface {
 
   render() {
     return (
-      <button class={{ checked: this.checked, boule: this.boule, extra: this.extra, disabled: this.disabled }} onClick={() => this.toggle.emit()}>
+      <button class={{ 'app-boule': true, 'checked': this.checked, 'boule': this.boule, 'extra': this.extra, 'disabled': this.disabled }} onClick={() => this.toggle.emit()}>
         {this.number}
       </button>
     );

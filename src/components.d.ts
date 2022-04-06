@@ -99,6 +99,7 @@ declare namespace LocalJSX {
     }
     interface AppGameWin {
         "gameWin"?: GameWin;
+        "onTryIt"?: (event: CustomEvent<void>) => void;
     }
     interface AppLotoForm {
         "boules"?: number[];
@@ -118,6 +119,7 @@ declare namespace LocalJSX {
         "nbMaxExtras"?: number;
         "onBouleDelete"?: (event: CustomEvent<number>) => void;
         "onExtraDelete"?: (event: CustomEvent<number>) => void;
+        "onTryNumbers"?: (event: CustomEvent<{ boules: number[]; extras: number[] }>) => void;
     }
     interface AppRoot {
     }

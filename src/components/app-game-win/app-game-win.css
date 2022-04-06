@@ -1,7 +1,7 @@
 .game-win {
   padding: 0.5rem;
   display: grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: auto 1fr auto;
   /* background-color: antiquewhite; */
   align-items: baseline;
   gap: 0.5rem;

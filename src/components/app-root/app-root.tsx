@@ -1,6 +1,7 @@
 import { Component, ComponentInterface, h, State } from '@stencil/core';
 import { GAME_CONFIGURATION } from '../../games.conf';
 import { Games } from '../../models';
+// TODO: add pico css
 
 @Component({
   tag: 'app-root',
@@ -54,12 +55,21 @@ export class AppRoot implements ComponentInterface {
             game={this.game}
             onBouleDelete={event => this.onBouleDelete(event)}
             onExtraDelete={event => this.onExtraDelete(event)}
+            onTryNumbers={event => this.onTryNumbers(event)}
             nbMaxBoules={this.nbMaxBoules}
             nbMaxExtras={this.nbMaxExtras}
           />
+          {/* TODO: add share */}
         </main>
+        {/* TODO: add footer */}
       </div>
     );
+  }
+
+  onTryNumbers(event: CustomEvent<{ boules: number[]; extras: number[] }>) {
+    this.boules = event.detail.boules;
+    this.extras = event.detail.extras;
+    this.updateUrl();
   }
 
   onGameChange(event: CustomEvent<Games>) {
@@ -79,7 +89,8 @@ export class AppRoot implements ComponentInterface {
   }
 
   private updateUrl() {
-    const query = new URLSearchParams({ boules: this.boules.join('-'), extras: this.extras.join('-') });
+    // TODO: handle hydration on loading
+    const query = new URLSearchParams({ boules: this.boules.join('-'), extras: this.extras.join('-'), game: this.game });
     const newUrl = window.location.protocol + '//' + window.location.host + window.location.pathname + '?' + query.toString();
     window.history.pushState({ path: newUrl }, '', newUrl);
   }

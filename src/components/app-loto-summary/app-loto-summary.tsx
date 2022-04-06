@@ -1,6 +1,6 @@
 import { Component, ComponentInterface, Event, EventEmitter, getAssetPath, h, Prop, State, Watch } from '@stencil/core';
 import { GameResult, Games, GameWin } from '../../models';
-import { formattedDate } from '../../utils';
+import { formatDate, formatMoney } from '../../utils';
 
 @Component({
   tag: 'app-loto-summary',
@@ -17,6 +17,7 @@ export class AppLotoSummary implements ComponentInterface {
 
   @Event() bouleDelete: EventEmitter<number>;
   @Event() extraDelete: EventEmitter<number>;
+  @Event() tryNumbers: EventEmitter<{ boules: number[]; extras: number[] }>;
 
   @State() loading = true;
 
@@ -88,22 +89,24 @@ export class AppLotoSummary implements ComponentInterface {
             <app-boule extra number={extra} onToggle={() => this.extraDelete.emit(extra)} checked />
           ))}
         </div>
+
         {gameWins.length === 0 && <p>Vous n'auriez rien gagné avec cette sélection. essayez autre chose</p>}
         {gameWins.length !== 0 && (
           <div class="results">
-            <p>
-              Voici les gains générés par cette grille sur la période de {formattedDate(this.gameResults[0].date)} à{' '}
-              {formattedDate(this.gameResults[this.gameResults.length - 1].date)}
-            </p>
+            <p>Voici les gains générés par cette grille</p>
             <ul>
               {gameWins.map(win => (
                 <li>
-                  <app-game-win gameWin={win} />
+                  <app-game-win gameWin={win} onTryIt={() => this.tryNumbers.emit({ boules: win.result.boules, extras: win.result.extras })} />
                 </li>
               ))}
             </ul>
           </div>
         )}
+        <p>
+          Les données affichées sont calculés sur la période de {formatDate(this.gameResults[0].date)} à {formatDate(this.gameResults[this.gameResults.length - 1].date)}. Vous
+          auriez donc dépensé {formatMoney(2 * this.gameResults.length)}.
+        </p>
       </div>
     );
   }

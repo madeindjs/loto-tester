@@ -1,6 +1,6 @@
-import { Component, ComponentInterface, h, Prop } from '@stencil/core';
+import { Component, ComponentInterface, Event, EventEmitter, h, Prop } from '@stencil/core';
 import { GameWin } from '../../models';
-import { formattedDate } from '../../utils';
+import { formatDate } from '../../utils';
 
 @Component({
   tag: 'app-game-win',
@@ -8,11 +8,12 @@ import { formattedDate } from '../../utils';
 })
 export class AppGameWin implements ComponentInterface {
   @Prop() gameWin: GameWin;
+  @Event() tryIt: EventEmitter<void>;
 
   render() {
     return (
       <div class={{ 'game-win': true, 'full': !this.gameWin.missingBoules.length && !this.gameWin.missingExtras.length }}>
-        <p class="game-win__date">{formattedDate(this.gameWin.result.date)}</p>
+        <p class="game-win__date">{formatDate(this.gameWin.result.date)}</p>
         <div class="boules">
           {this.gameWin.result.boules.map(boule => (
             <app-boule boule number={boule} disabled checked={!this.gameWin.missingBoules.includes(boule)} />
@@ -21,6 +22,7 @@ export class AppGameWin implements ComponentInterface {
             <app-boule extra number={extra} disabled checked={!this.gameWin.missingExtras.includes(extra)} />
           ))}
         </div>
+        <button onClick={() => this.tryIt.emit()}>Jouer cette grille</button>
       </div>
     );
   }
