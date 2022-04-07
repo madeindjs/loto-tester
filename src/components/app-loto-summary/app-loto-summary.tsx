@@ -103,7 +103,7 @@ export class AppLotoSummary implements ComponentInterface {
         </div>
 
         <p>
-          En ayant joué {formatMoney(money)} de {formatDate(this.gameResults[0].date)} à {formatDate(this.gameResults[this.gameResults.length - 1].date)}, <br />
+          En ayant joué {formatMoney(2)} de {formatDate(this.gameResults[0].date)} à {formatDate(this.gameResults[this.gameResults.length - 1].date)}, <br />
           <strong>votre solde final serait de {formatMoney(money)}</strong>.
         </p>
 
