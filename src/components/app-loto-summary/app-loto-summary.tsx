@@ -22,6 +22,7 @@ export class AppLotoSummary implements ComponentInterface {
   @State() loading = true;
 
   @State() gameResults: GameResult[];
+  @State() minResultDisplay = 100;
 
   componentWillLoad(): void | Promise<void> {
     this.loadData();
@@ -46,10 +47,10 @@ export class AppLotoSummary implements ComponentInterface {
     this.loading = false;
   }
 
-  computeGameWins(): { results: GameWin[]; points: GameGraphData[] } {
+  computeGameWins(): { results: GameWin[]; points: GameGraphData[]; money: number } {
     const results: GameWin[] = [];
     const points: GameGraphData[] = [];
-    let current = 0;
+    let money = 0;
 
     for (const gameResult of this.gameResults) {
       const boulesMatch = gameResult.boules.filter(b => this.boules.includes(b));
@@ -60,19 +61,19 @@ export class AppLotoSummary implements ComponentInterface {
 
       const moneyWin = this.gameComputeWin(boulesMatch.length, extrasMatch.length);
 
-      if (moneyWin > 100) {
+      if (moneyWin > this.minResultDisplay) {
         results.push({ result: gameResult, missingBoules, missingExtras: missingExtras, money: moneyWin });
       }
 
-      current -= 2;
-      current += moneyWin;
+      money -= 2;
+      money += moneyWin;
 
-      points.push({ x: new Date(gameResult.date), y: current });
+      points.push({ x: new Date(gameResult.date), y: money });
     }
 
     results.sort((a, b) => new Date(b.result.date).getTime() - new Date(a.result.date).getTime());
 
-    return { results, points };
+    return { results, points, money };
   }
 
   render() {
@@ -84,25 +85,32 @@ export class AppLotoSummary implements ComponentInterface {
       return <p aria-busy="true">Chargement des données pour {this.game}</p>;
     }
 
-    const { results: gameWins, points } = this.computeGameWins();
+    const { results: gameWins, points, money } = this.computeGameWins();
 
     return (
       <div class="loto-summary">
-        <h2>Résultat</h2>
-        <p>Vous avez joué ces nombres:</p>
-        <div class="boules">
-          {this.boules.map(boule => (
-            <app-boule boule number={boule} onToggle={() => this.bouleDelete.emit(boule)} checked />
-          ))}
-          {this.extras.map(extra => (
-            <app-boule extra number={extra} onToggle={() => this.extraDelete.emit(extra)} checked />
-          ))}
+        <div class="loto-summary__title grid">
+          <h2>Résultat</h2>
+
+          <div class="boules">
+            {this.boules.map(boule => (
+              <app-boule boule number={boule} onToggle={() => this.bouleDelete.emit(boule)} checked />
+            ))}
+            {this.extras.map(extra => (
+              <app-boule extra number={extra} onToggle={() => this.extraDelete.emit(extra)} checked />
+            ))}
+          </div>
         </div>
 
-        {gameWins.length === 0 && <p>Vous n'auriez rien gagné avec cette sélection. essayez autre chose</p>}
+        <p>
+          En ayant joué {formatMoney(money)} de {formatDate(this.gameResults[0].date)} à {formatDate(this.gameResults[this.gameResults.length - 1].date)}, <br />
+          <strong>votre solde final serait de {formatMoney(money)}</strong>.
+        </p>
+
+        {gameWins.length === 0 && <p>Vous n'auriez jamais rien gagné de plus de {formatMoney(this.minResultDisplay)}...</p>}
         {gameWins.length !== 0 && (
           <div class="results">
-            <p>Voici les gains générés par cette grille</p>
+            <p>Voici les gains supérieur à {formatMoney(this.minResultDisplay)}:</p>
             <table>
               <thead>
                 <th>date</th>
@@ -132,10 +140,9 @@ export class AppLotoSummary implements ComponentInterface {
             </table>
           </div>
         )}
-        <p>
-          Les données affichées sont calculés sur la période de {formatDate(this.gameResults[0].date)} à {formatDate(this.gameResults[this.gameResults.length - 1].date)}. Vous
-          auriez donc dépensé {formatMoney(2 * this.gameResults.length)}.
-        </p>
+
+        <p>Et un joli graphique plus parlant:</p>
+
         <app-loto-summary-graph points={points} />
       </div>
     );

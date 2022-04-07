@@ -8,9 +8,9 @@ import { GameComputeWin, Games } from '../../models';
   styleUrl: 'app-root.css',
 })
 export class AppRoot implements ComponentInterface {
-  @State() boules: number[] = [27, 38, 42, 44, 46];
-  @State() extras: number[] = [1];
-  @State() game: Games = Games.Loto;
+  @State() boules: number[];
+  @State() extras: number[];
+  @State() game: Games;
 
   get nbBoules(): number {
     return GAME_CONFIGURATION[this.game].nbBoules;
@@ -32,26 +32,41 @@ export class AppRoot implements ComponentInterface {
     return GAME_CONFIGURATION[this.game].computeWin;
   }
 
+  componentWillLoad(): void | Promise<void> {
+    const params = new URLSearchParams(window.location.search);
+
+    const game = params.get('game') as Games;
+    this.game = [Games.Loto, Games.EuroMillion].includes(game) ? game : Games.Loto;
+
+    this.boules = params.get('boules')?.split('-').filter(Boolean).map(Number) ?? [27, 38, 42, 44, 46];
+    this.extras = params.get('extras')?.split('-').filter(Boolean).map(Number) ?? [1];
+    this.updateUrl();
+  }
+
   render() {
     return (
       <div>
-        <header>
-          <h1>Stencil App Starter</h1>
-        </header>
+        <header></header>
 
         <main class="container-fluid">
+          <h1>
+            Aurai-je gagné au <strong>{this.game.toLocaleUpperCase()}</strong> <i>(bordel)</i>?!
+          </h1>
           <app-game-selector value={this.game} onUpdate={e => this.onGameChange(e)} />
           <div class="grid">
-            <app-loto-form
-              boules={this.boules}
-              extras={this.extras}
-              onBoulesChange={event => this.onBoulesChange(event)}
-              onExtrasChange={event => this.onExtrasChange(event)}
-              nbBoules={this.nbBoules}
-              nbMaxBoules={this.nbMaxBoules}
-              nbExtras={this.nbExtras}
-              nbMaxExtras={this.nbMaxExtras}
-            />
+            <div>
+              <h2>Votre jeu</h2>
+              <app-loto-form
+                boules={this.boules}
+                extras={this.extras}
+                onBoulesChange={event => this.onBoulesChange(event)}
+                onExtrasChange={event => this.onExtrasChange(event)}
+                nbBoules={this.nbBoules}
+                nbMaxBoules={this.nbMaxBoules}
+                nbExtras={this.nbExtras}
+                nbMaxExtras={this.nbMaxExtras}
+              />
+            </div>
             <app-loto-summary
               boules={this.boules}
               extras={this.extras}

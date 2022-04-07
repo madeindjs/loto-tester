@@ -1,3 +1,7 @@
+.loto-summary__title {
+  align-items: baseline;
+}
+
 .boules {
   display: flex;
   gap: 0.5rem;

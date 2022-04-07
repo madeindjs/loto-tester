@@ -13,8 +13,10 @@ export class AppLotoSelector implements ComponentInterface {
 
   render() {
     return (
-      <fieldset>
-        <legend>Sélectionnez le type de jeu</legend>
+      <details>
+        <summary>
+          Type de jeu: <strong>{this.value.toLocaleUpperCase()}</strong>
+        </summary>
         <div class="options">
           <label
             htmlFor="loto-input"
@@ -37,7 +39,7 @@ export class AppLotoSelector implements ComponentInterface {
             <img src={getAssetPath('assets/euromilion.svg')} alt="Euromilion" />
           </label>
         </div>
-      </fieldset>
+      </details>
     );
   }
 }
