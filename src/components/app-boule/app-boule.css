@@ -3,7 +3,7 @@ button.app-boule {
   font-weight: bold;
   border: none;
   background-color: white;
-  box-shadow: 0 5px 10px 0 hsla(0, 0%, 74.9%, 0.5);
+  /* box-shadow: 0 5px 10px 0 hsla(0, 0%, 74.9%, 0.5); */
 
   height: 2rem;
   width: 2rem;

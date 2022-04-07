@@ -24,15 +24,13 @@ export class AppLotoForm implements ComponentInterface {
 
     return (
       <div class="loto-form">
-        <h2>Votre jeu</h2>
-        <p>Nombres</p>
         <div class="boules">
           {boules.map(boule => (
             <app-boule boule number={boule} checked={this.boules.includes(boule)} onToggle={() => this.onNumberClick('boules', boule)}></app-boule>
           ))}
         </div>
 
-        <p>Extra</p>
+        <hr />
 
         <div class="boules">
           {extras.map(extra => (

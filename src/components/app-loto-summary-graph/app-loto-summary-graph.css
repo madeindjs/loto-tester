@@ -1,0 +1,9 @@
+@import '~chartist/dist/chartist.min.css';
+
+.ct-area.ct-threshold-above {
+  fill: #f05b4f;
+}
+
+.ct-area.ct-threshold-below {
+  fill: #59922b;
+}

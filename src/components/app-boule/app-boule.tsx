@@ -3,6 +3,7 @@ import { Component, ComponentInterface, Event, EventEmitter, h, Prop } from '@st
 @Component({
   tag: 'app-boule',
   styleUrl: 'app-boule.css',
+  shadow: true,
 })
 export class AppBoule implements ComponentInterface {
   @Prop() number: number;

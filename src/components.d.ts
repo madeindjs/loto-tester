@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { Games, GameWin } from "./models";
+import { GameComputeWin, GameGraphData, Games } from "./models";
 export namespace Components {
     interface AppBoule {
         "boule": boolean;
@@ -16,9 +16,6 @@ export namespace Components {
     }
     interface AppGameSelector {
         "value": Games;
-    }
-    interface AppGameWin {
-        "gameWin": GameWin;
     }
     interface AppLotoForm {
         "boules": number[];
@@ -32,8 +29,12 @@ export namespace Components {
         "boules": number[];
         "extras": number[];
         "game": Games;
+        "gameComputeWin": GameComputeWin;
         "nbMaxBoules": number;
         "nbMaxExtras": number;
+    }
+    interface AppLotoSummaryGraph {
+        "points": GameGraphData[];
     }
     interface AppRoot {
     }
@@ -51,12 +52,6 @@ declare global {
         prototype: HTMLAppGameSelectorElement;
         new (): HTMLAppGameSelectorElement;
     };
-    interface HTMLAppGameWinElement extends Components.AppGameWin, HTMLStencilElement {
-    }
-    var HTMLAppGameWinElement: {
-        prototype: HTMLAppGameWinElement;
-        new (): HTMLAppGameWinElement;
-    };
     interface HTMLAppLotoFormElement extends Components.AppLotoForm, HTMLStencilElement {
     }
     var HTMLAppLotoFormElement: {
@@ -69,6 +64,12 @@ declare global {
         prototype: HTMLAppLotoSummaryElement;
         new (): HTMLAppLotoSummaryElement;
     };
+    interface HTMLAppLotoSummaryGraphElement extends Components.AppLotoSummaryGraph, HTMLStencilElement {
+    }
+    var HTMLAppLotoSummaryGraphElement: {
+        prototype: HTMLAppLotoSummaryGraphElement;
+        new (): HTMLAppLotoSummaryGraphElement;
+    };
     interface HTMLAppRootElement extends Components.AppRoot, HTMLStencilElement {
     }
     var HTMLAppRootElement: {
@@ -78,9 +79,9 @@ declare global {
     interface HTMLElementTagNameMap {
         "app-boule": HTMLAppBouleElement;
         "app-game-selector": HTMLAppGameSelectorElement;
-        "app-game-win": HTMLAppGameWinElement;
         "app-loto-form": HTMLAppLotoFormElement;
         "app-loto-summary": HTMLAppLotoSummaryElement;
+        "app-loto-summary-graph": HTMLAppLotoSummaryGraphElement;
         "app-root": HTMLAppRootElement;
     }
 }
@@ -97,10 +98,6 @@ declare namespace LocalJSX {
         "onUpdate"?: (event: CustomEvent<Games>) => void;
         "value"?: Games;
     }
-    interface AppGameWin {
-        "gameWin"?: GameWin;
-        "onTryIt"?: (event: CustomEvent<void>) => void;
-    }
     interface AppLotoForm {
         "boules"?: number[];
         "extras"?: number[];
@@ -115,20 +112,24 @@ declare namespace LocalJSX {
         "boules"?: number[];
         "extras"?: number[];
         "game"?: Games;
+        "gameComputeWin"?: GameComputeWin;
         "nbMaxBoules"?: number;
         "nbMaxExtras"?: number;
         "onBouleDelete"?: (event: CustomEvent<number>) => void;
         "onExtraDelete"?: (event: CustomEvent<number>) => void;
         "onTryNumbers"?: (event: CustomEvent<{ boules: number[]; extras: number[] }>) => void;
     }
+    interface AppLotoSummaryGraph {
+        "points"?: GameGraphData[];
+    }
     interface AppRoot {
     }
     interface IntrinsicElements {
         "app-boule": AppBoule;
         "app-game-selector": AppGameSelector;
-        "app-game-win": AppGameWin;
         "app-loto-form": AppLotoForm;
         "app-loto-summary": AppLotoSummary;
+        "app-loto-summary-graph": AppLotoSummaryGraph;
         "app-root": AppRoot;
     }
 }
@@ -138,9 +139,9 @@ declare module "@stencil/core" {
         interface IntrinsicElements {
             "app-boule": LocalJSX.AppBoule & JSXBase.HTMLAttributes<HTMLAppBouleElement>;
             "app-game-selector": LocalJSX.AppGameSelector & JSXBase.HTMLAttributes<HTMLAppGameSelectorElement>;
-            "app-game-win": LocalJSX.AppGameWin & JSXBase.HTMLAttributes<HTMLAppGameWinElement>;
             "app-loto-form": LocalJSX.AppLotoForm & JSXBase.HTMLAttributes<HTMLAppLotoFormElement>;
             "app-loto-summary": LocalJSX.AppLotoSummary & JSXBase.HTMLAttributes<HTMLAppLotoSummaryElement>;
+            "app-loto-summary-graph": LocalJSX.AppLotoSummaryGraph & JSXBase.HTMLAttributes<HTMLAppLotoSummaryGraphElement>;
             "app-root": LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;
         }
     }

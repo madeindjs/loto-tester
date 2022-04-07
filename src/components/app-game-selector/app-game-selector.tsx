@@ -5,7 +5,7 @@ import { Games } from '../../models';
   tag: 'app-game-selector',
   styleUrl: 'app-game-selector.css',
   assetsDirs: ['assets'],
-  shadow: true,
+  // shadow: true,
 })
 export class AppLotoSelector implements ComponentInterface {
   @Prop() value: Games;

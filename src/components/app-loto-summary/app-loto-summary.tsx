@@ -1,11 +1,10 @@
 import { Component, ComponentInterface, Event, EventEmitter, getAssetPath, h, Prop, State, Watch } from '@stencil/core';
-import { GameResult, Games, GameWin } from '../../models';
+import { GameComputeWin, GameGraphData, GameResult, Games, GameWin } from '../../models';
 import { formatDate, formatMoney } from '../../utils';
 
 @Component({
   tag: 'app-loto-summary',
   styleUrl: 'app-loto-summary.css',
-  shadow: true,
   assetsDirs: ['assets'],
 })
 export class AppLotoSummary implements ComponentInterface {
@@ -14,6 +13,7 @@ export class AppLotoSummary implements ComponentInterface {
   @Prop() game: Games;
   @Prop() nbMaxBoules: number;
   @Prop() nbMaxExtras: number;
+  @Prop() gameComputeWin: GameComputeWin;
 
   @Event() bouleDelete: EventEmitter<number>;
   @Event() extraDelete: EventEmitter<number>;
@@ -46,8 +46,10 @@ export class AppLotoSummary implements ComponentInterface {
     this.loading = false;
   }
 
-  computeGameWins(): GameWin[] {
+  computeGameWins(): { results: GameWin[]; points: GameGraphData[] } {
     const results: GameWin[] = [];
+    const points: GameGraphData[] = [];
+    let current = 0;
 
     for (const gameResult of this.gameResults) {
       const boulesMatch = gameResult.boules.filter(b => this.boules.includes(b));
@@ -56,14 +58,21 @@ export class AppLotoSummary implements ComponentInterface {
       const extrasMatch = gameResult.extras.filter(b => this.extras.includes(b));
       const missingExtras = gameResult.extras.filter(b => !extrasMatch.includes(b));
 
-      if (missingBoules.length + missingExtras.length < 3) {
-        results.push({ result: gameResult, missingBoules, missingExtras: missingExtras });
+      const moneyWin = this.gameComputeWin(boulesMatch.length, extrasMatch.length);
+
+      if (moneyWin > 100) {
+        results.push({ result: gameResult, missingBoules, missingExtras: missingExtras, money: moneyWin });
       }
+
+      current -= 2;
+      current += moneyWin;
+
+      points.push({ x: new Date(gameResult.date), y: current });
     }
 
     results.sort((a, b) => new Date(b.result.date).getTime() - new Date(a.result.date).getTime());
 
-    return results;
+    return { results, points };
   }
 
   render() {
@@ -75,7 +84,7 @@ export class AppLotoSummary implements ComponentInterface {
       return <p aria-busy="true">Chargement des données pour {this.game}</p>;
     }
 
-    const gameWins = this.computeGameWins();
+    const { results: gameWins, points } = this.computeGameWins();
 
     return (
       <div class="loto-summary">
@@ -94,19 +103,40 @@ export class AppLotoSummary implements ComponentInterface {
         {gameWins.length !== 0 && (
           <div class="results">
             <p>Voici les gains générés par cette grille</p>
-            <ul>
-              {gameWins.map(win => (
-                <li>
-                  <app-game-win gameWin={win} onTryIt={() => this.tryNumbers.emit({ boules: win.result.boules, extras: win.result.extras })} />
-                </li>
-              ))}
-            </ul>
+            <table>
+              <thead>
+                <th>date</th>
+                <th>nombres</th>
+                <th>montant</th>
+                {/* <th></th> */}
+              </thead>
+              <tbody>
+                {gameWins.map(gameWin => (
+                  <tr class={{ 'game-win': true, 'full': !gameWin.missingBoules.length && !gameWin.missingExtras.length }}>
+                    <td class="game-win__date">{formatDate(gameWin.result.date)}</td>
+                    <td class="boules">
+                      {gameWin.result.boules.map(boule => (
+                        <app-boule boule number={boule} disabled checked={!gameWin.missingBoules.includes(boule)} />
+                      ))}
+                      {gameWin.result.extras.map(extra => (
+                        <app-boule extra number={extra} disabled checked={!gameWin.missingExtras.includes(extra)} />
+                      ))}
+                    </td>
+                    <td>{formatMoney(gameWin.money)}</td>
+                    {/* <td>
+                      <button onClick={() => this.tryNumbers.emit()}>Jouer cette grille</button>
+                    </td> */}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         )}
         <p>
           Les données affichées sont calculés sur la période de {formatDate(this.gameResults[0].date)} à {formatDate(this.gameResults[this.gameResults.length - 1].date)}. Vous
           auriez donc dépensé {formatMoney(2 * this.gameResults.length)}.
         </p>
+        <app-loto-summary-graph points={points} />
       </div>
     );
   }

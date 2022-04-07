@@ -1,12 +1,11 @@
 import { Component, ComponentInterface, h, State } from '@stencil/core';
 import { GAME_CONFIGURATION } from '../../games.conf';
-import { Games } from '../../models';
+import { GameComputeWin, Games } from '../../models';
 // TODO: add pico css
 
 @Component({
   tag: 'app-root',
   styleUrl: 'app-root.css',
-  shadow: true,
 })
 export class AppRoot implements ComponentInterface {
   @State() boules: number[] = [27, 38, 42, 44, 46];
@@ -29,6 +28,10 @@ export class AppRoot implements ComponentInterface {
     return GAME_CONFIGURATION[this.game].nbMaxExtras;
   }
 
+  get gameComputeWin(): GameComputeWin {
+    return GAME_CONFIGURATION[this.game].computeWin;
+  }
+
   render() {
     return (
       <div>
@@ -36,29 +39,32 @@ export class AppRoot implements ComponentInterface {
           <h1>Stencil App Starter</h1>
         </header>
 
-        <main>
+        <main class="container-fluid">
           <app-game-selector value={this.game} onUpdate={e => this.onGameChange(e)} />
+          <div class="grid">
+            <app-loto-form
+              boules={this.boules}
+              extras={this.extras}
+              onBoulesChange={event => this.onBoulesChange(event)}
+              onExtrasChange={event => this.onExtrasChange(event)}
+              nbBoules={this.nbBoules}
+              nbMaxBoules={this.nbMaxBoules}
+              nbExtras={this.nbExtras}
+              nbMaxExtras={this.nbMaxExtras}
+            />
+            <app-loto-summary
+              boules={this.boules}
+              extras={this.extras}
+              game={this.game}
+              gameComputeWin={this.gameComputeWin}
+              onBouleDelete={event => this.onBouleDelete(event)}
+              onExtraDelete={event => this.onExtraDelete(event)}
+              onTryNumbers={event => this.onTryNumbers(event)}
+              nbMaxBoules={this.nbMaxBoules}
+              nbMaxExtras={this.nbMaxExtras}
+            />
+          </div>
 
-          <app-loto-form
-            boules={this.boules}
-            extras={this.extras}
-            onBoulesChange={event => this.onBoulesChange(event)}
-            onExtrasChange={event => this.onExtrasChange(event)}
-            nbBoules={this.nbBoules}
-            nbMaxBoules={this.nbMaxBoules}
-            nbExtras={this.nbExtras}
-            nbMaxExtras={this.nbMaxExtras}
-          />
-          <app-loto-summary
-            boules={this.boules}
-            extras={this.extras}
-            game={this.game}
-            onBouleDelete={event => this.onBouleDelete(event)}
-            onExtraDelete={event => this.onExtraDelete(event)}
-            onTryNumbers={event => this.onTryNumbers(event)}
-            nbMaxBoules={this.nbMaxBoules}
-            nbMaxExtras={this.nbMaxExtras}
-          />
           {/* TODO: add share */}
         </main>
         {/* TODO: add footer */}

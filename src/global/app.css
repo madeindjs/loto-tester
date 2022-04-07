@@ -7,6 +7,9 @@
 
   Any global CSS variables should also be applied here.
 */
+/* @import '~chartist/dist/chartist.min.css'; */
+
+@import '~@picocss/pico/css/pico.min.css';
 
 body {
   margin: 0px;
