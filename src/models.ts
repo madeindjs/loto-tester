@@ -3,14 +3,14 @@ export enum Games {
   EuroMillion = 'euromillion',
 }
 
-export type GameComputeWin = (nbBoulesMatch: number, nbExtrasMatches: number) => number;
+export type GameComputeMoney = (nbBoulesMatch: number, nbExtrasMatches: number) => number;
 
 export interface GameConfiguration {
   nbBoules: number;
   nbExtras: number;
   nbMaxBoules: number;
   nbMaxExtras: number;
-  computeWin: GameComputeWin;
+  computeWin: GameComputeMoney;
 }
 
 export interface GameResult {

@@ -1,4 +1,6 @@
-export function formatDate(date: string | Date): string {
+export function formatDate(date: string | Date | undefined): string {
+  if (date === undefined) return;
+
   return Intl.DateTimeFormat().format(new Date(date));
 }
 

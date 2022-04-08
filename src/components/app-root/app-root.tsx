@@ -1,6 +1,6 @@
 import { Component, ComponentInterface, h, State } from '@stencil/core';
 import { GAME_CONFIGURATION } from '../../games.conf';
-import { GameComputeWin, Games } from '../../models';
+import { GameComputeMoney, Games } from '../../models';
 // TODO: add pico css
 
 @Component({
@@ -28,7 +28,7 @@ export class AppRoot implements ComponentInterface {
     return GAME_CONFIGURATION[this.game].nbMaxExtras;
   }
 
-  get gameComputeWin(): GameComputeWin {
+  get gameComputeWin(): GameComputeMoney {
     return GAME_CONFIGURATION[this.game].computeWin;
   }
 
