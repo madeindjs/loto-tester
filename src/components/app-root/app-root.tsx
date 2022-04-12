@@ -8,9 +8,9 @@ import { GameComputeMoney, Games } from '../../models';
   styleUrl: 'app-root.css',
 })
 export class AppRoot implements ComponentInterface {
-  @State() boules: number[];
-  @State() extras: number[];
-  @State() game: Games;
+  @State() boules: number[] = [];
+  @State() extras: number[] = [];
+  @State() game: Games = Games.Loto;
 
   get nbBoules(): number {
     return GAME_CONFIGURATION[this.game].nbBoules;
@@ -33,14 +33,52 @@ export class AppRoot implements ComponentInterface {
   }
 
   componentWillLoad(): void | Promise<void> {
-    const params = new URLSearchParams(window.location.search);
+    this.loadStateFromHash(window.location.hash);
+    window.addEventListener(
+      'hashchange',
+      _event => {
+        this.loadStateFromHash(window.location.hash);
+      },
+      false,
+    );
+
+    this.updateUrl();
+  }
+
+  loadStateFromHash(hash: string) {
+    if (hash.startsWith('#')) {
+      hash = hash.slice(1);
+    }
+
+    const params = new URLSearchParams(hash);
+    console.log(hash, params);
 
     const game = params.get('game') as Games;
     this.game = [Games.Loto, Games.EuroMillion].includes(game) ? game : Games.Loto;
 
-    this.boules = params.get('boules')?.split('-').filter(Boolean).map(Number) ?? [27, 38, 42, 44, 46];
-    this.extras = params.get('extras')?.split('-').filter(Boolean).map(Number) ?? [1];
-    this.updateUrl();
+    const boules =
+      params
+        .get('boules')
+        ?.split('-')
+        .filter(Boolean)
+        .map(Number)
+        .sort((a, b) => a - b) ?? [];
+
+    if (boules.join('-') !== this.boules.join('-')) {
+      this.boules = boules;
+    }
+
+    const extras =
+      params
+        .get('extras')
+        ?.split('-')
+        .filter(Boolean)
+        .map(Number)
+        .sort((a, b) => a - b) ?? [];
+
+    if (extras.join('-') !== this.extras.join('-')) {
+      this.extras = extras;
+    }
   }
 
   render() {
@@ -110,10 +148,10 @@ export class AppRoot implements ComponentInterface {
   }
 
   private updateUrl() {
-    // TODO: handle hydration on loading
     const query = new URLSearchParams({ boules: this.boules.join('-'), extras: this.extras.join('-'), game: this.game });
-    const newUrl = window.location.protocol + '//' + window.location.host + window.location.pathname + '?' + query.toString();
-    window.history.pushState({ path: newUrl }, '', newUrl);
+
+    // if (window.location.hash = query.toString())
+    window.location.hash = query.toString();
   }
 
   onBouleDelete(event: CustomEvent<number>) {
