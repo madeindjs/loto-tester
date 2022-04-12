@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { GameComputeMoney, GameGraphData, Games } from "./models";
+import { GameGraphData, Games } from "./models";
 export namespace Components {
     interface AppBoule {
         "boule": boolean;
@@ -29,7 +29,6 @@ export namespace Components {
         "boules": number[];
         "extras": number[];
         "game": Games;
-        "gameComputeWin": GameComputeMoney;
         "nbMaxBoules": number;
         "nbMaxExtras": number;
         "price": number;
@@ -113,7 +112,6 @@ declare namespace LocalJSX {
         "boules"?: number[];
         "extras"?: number[];
         "game"?: Games;
-        "gameComputeWin"?: GameComputeMoney;
         "nbMaxBoules"?: number;
         "nbMaxExtras"?: number;
         "onBouleDelete"?: (event: CustomEvent<number>) => void;

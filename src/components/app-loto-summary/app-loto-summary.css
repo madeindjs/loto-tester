@@ -1,5 +1,9 @@
 .loto-summary__title {
   align-items: baseline;
+
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1rem;
 }
 
 .boules {

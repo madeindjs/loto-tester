@@ -1,8 +1,8 @@
 import { Component, ComponentInterface, Event, EventEmitter, getAssetPath, h, Prop, State, Watch } from '@stencil/core';
-import { GameComputeMoney, GameGraphData, Games, GameWin } from '../../models';
+import { GameGraphData, Games, GameWin } from '../../models';
 import { getGameResultsComputed } from '../../services/game-fetch.service';
 import { formatDate, formatMoney } from '../../utils';
-import { computeGameWins } from '../game-summary.worker';
+import { computeGameSummary } from '../game-summary.worker';
 
 @Component({
   tag: 'app-loto-summary',
@@ -15,7 +15,6 @@ export class AppLotoSummary implements ComponentInterface {
   @Prop() game: Games;
   @Prop() nbMaxBoules: number;
   @Prop() nbMaxExtras: number;
-  @Prop() gameComputeWin: GameComputeMoney;
   @Prop() price: number;
 
   @Event() bouleDelete: EventEmitter<number>;
@@ -31,6 +30,7 @@ export class AppLotoSummary implements ComponentInterface {
   @State() points: GameGraphData[];
   @State() firstDate: Date;
   @State() lastDate: Date;
+  @State() nbTries: number;
 
   componentWillLoad(): void | Promise<void> {
     this.loadDate().catch(console.error);
@@ -44,27 +44,27 @@ export class AppLotoSummary implements ComponentInterface {
 
     const gameResults = await getGameResultsComputed(getAssetPath(`assets/${this.game}.json`));
 
-    const data = await computeGameWins(gameResults, this.boules, this.extras, this.game);
+    const data = await computeGameSummary(gameResults, this.boules, this.extras, this.game);
 
     this.money = data.money;
     this.gameWins = data.results;
     this.points = data.points;
     this.firstDate = data.firstDate;
     this.lastDate = data.lastDate;
+    this.nbTries = data.nbTries;
 
     this.loading = false;
   }
 
   render() {
-    if (!this.game) {
+    if (!this.game || this.gameWins === undefined) {
       return <p>Sélectionnez un type de jeu</p>;
     }
 
     return (
       <div class="loto-summary" aria-busy={this.loading}>
-        <div class="loto-summary__title grid">
-          <h2>Résultat</h2>
-
+        <hgroup>
+          <h2>Résultat {this.money > 0 ? '💸' : '😭'}</h2>
           <div class="boules">
             {this.boules.map(boule => (
               <app-boule boule number={boule} onToggle={() => this.bouleDelete.emit(boule)} checked />
@@ -73,10 +73,10 @@ export class AppLotoSummary implements ComponentInterface {
               <app-boule extra number={extra} onToggle={() => this.extraDelete.emit(extra)} checked />
             ))}
           </div>
-        </div>
+        </hgroup>
 
         <p>
-          En ayant joué {formatMoney(this.price)} de {formatDate(this.firstDate)} à {formatDate(this.lastDate)}, <br />
+          En ayant joué {formatMoney(this.price)} de {formatDate(this.firstDate)} à {formatDate(this.lastDate)} <small>({this.nbTries} fois)</small>,
           <strong>votre solde final serait de {formatMoney(this.money)}</strong>.
         </p>
 

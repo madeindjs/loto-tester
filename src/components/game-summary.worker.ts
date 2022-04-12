@@ -1,12 +1,7 @@
 import { GAME_CONFIGURATION } from '../games.conf';
-import { GameGraphData, GameResultComputed, Games, GameWin } from '../models';
+import { GameGraphData, GameResultComputed, Games, GameSummary, GameWin } from '../models';
 
-export async function computeGameWins(
-  gameResults: GameResultComputed[],
-  boules: number[],
-  extras: number[],
-  game: Games,
-): Promise<{ results: GameWin[]; points: GameGraphData[]; money: number; firstDate: Date; lastDate: Date }> {
+export async function computeGameSummary(gameResults: GameResultComputed[], boules: number[], extras: number[], game: Games): Promise<GameSummary> {
   const { computeWin, price } = GAME_CONFIGURATION[game];
 
   this.gameResults = gameResults;
@@ -37,7 +32,14 @@ export async function computeGameWins(
   results.sort((a, b) => new Date(b.result.date).getTime() - new Date(a.result.date).getTime());
 
   const firstDate = new Date(gameResults[0]?.date);
-  const lastDate = new Date(gameResults[-1]?.date);
+  const lastDate = new Date(gameResults[gameResults.length - 1]?.date);
 
-  return { results, points, money, firstDate: !isNaN(firstDate.valueOf()) ? firstDate : undefined, lastDate: !isNaN(lastDate.valueOf()) ? firstDate : undefined };
+  return {
+    results,
+    points,
+    money,
+    firstDate: !isNaN(firstDate.valueOf()) ? firstDate : undefined,
+    lastDate: !isNaN(lastDate.valueOf()) ? firstDate : undefined,
+    nbTries: gameResults.length,
+  };
 }

@@ -1,7 +1,6 @@
 import { Component, ComponentInterface, h, State } from '@stencil/core';
 import { GAME_CONFIGURATION } from '../../games.conf';
-import { GameComputeMoney, Games } from '../../models';
-// TODO: add pico css
+import { Games } from '../../models';
 
 @Component({
   tag: 'app-root',
@@ -28,8 +27,8 @@ export class AppRoot implements ComponentInterface {
     return GAME_CONFIGURATION[this.game].nbMaxExtras;
   }
 
-  get gameComputeWin(): GameComputeMoney {
-    return GAME_CONFIGURATION[this.game].computeWin;
+  get price(): number {
+    return GAME_CONFIGURATION[this.game].price;
   }
 
   componentWillLoad(): void | Promise<void> {
@@ -91,7 +90,7 @@ export class AppRoot implements ComponentInterface {
           </h1>
           <app-game-selector value={this.game} onUpdate={e => this.onGameChange(e)} />
           <div class="grid">
-            <div>
+            <div class="form">
               <h2>Votre jeu</h2>
               <app-loto-form
                 boules={this.boules}
@@ -108,7 +107,7 @@ export class AppRoot implements ComponentInterface {
               boules={this.boules}
               extras={this.extras}
               game={this.game}
-              gameComputeWin={this.gameComputeWin}
+              price={this.price}
               onBouleDelete={event => this.onBouleDelete(event)}
               onExtraDelete={event => this.onExtraDelete(event)}
               onTryNumbers={event => this.onTryNumbers(event)}

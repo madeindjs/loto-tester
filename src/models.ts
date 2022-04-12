@@ -37,3 +37,12 @@ export interface GameWin {
   missingExtras: number[];
   money: number;
 }
+
+export interface GameSummary {
+  results: GameWin[];
+  points: GameGraphData[];
+  money: number;
+  firstDate: Date;
+  lastDate: Date;
+  nbTries: number;
+}

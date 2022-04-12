@@ -50,7 +50,7 @@ export class AppLotoForm implements ComponentInterface {
     } else {
       if (array.length >= max) array.splice(0, array.length + 1 - max);
 
-      array = [...array, number];
+      array = [...array, number].sort((a, b) => a - b);
     }
 
     if (type === 'boules') {
