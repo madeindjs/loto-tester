@@ -13,7 +13,7 @@ export class AppLotoSelector implements ComponentInterface {
 
   render() {
     return (
-      <details>
+      <details open>
         <summary>
           Type de jeu: <strong>{this.value.toLocaleUpperCase()}</strong>
         </summary>

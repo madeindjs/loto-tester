@@ -85,7 +85,7 @@ export class AppRoot implements ComponentInterface {
       <div>
         <header></header>
 
-        <main class="container-fluid">
+        <main class="container">
           <h1>
             Aurais-je gagné au <strong>{this.game.toLocaleUpperCase()}</strong> <i>(bordel)</i>?!
           </h1>
