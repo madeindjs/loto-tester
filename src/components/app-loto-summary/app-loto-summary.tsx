@@ -1,5 +1,6 @@
 import { Component, ComponentInterface, Event, EventEmitter, getAssetPath, h, Prop, State, Watch } from '@stencil/core';
 import { GameComputeMoney, GameGraphData, Games, GameWin } from '../../models';
+import { getGameResultsComputed } from '../../services/game-fetch.service';
 import { formatDate, formatMoney } from '../../utils';
 import { computeGameWins } from '../game-summary.worker';
 
@@ -40,7 +41,9 @@ export class AppLotoSummary implements ComponentInterface {
   async loadDate(): Promise<void> {
     this.loading = true;
 
-    const data = await computeGameWins(getAssetPath(`assets/${this.game}.json`), this.boules, this.extras, this.game);
+    const gameResults = await getGameResultsComputed(getAssetPath(`assets/${this.game}.json`));
+
+    const data = await computeGameWins(gameResults, this.boules, this.extras, this.game);
 
     this.money = data.money;
     this.gameWins = data.results;

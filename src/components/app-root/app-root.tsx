@@ -51,7 +51,6 @@ export class AppRoot implements ComponentInterface {
     }
 
     const params = new URLSearchParams(hash);
-    console.log(hash, params);
 
     const game = params.get('game') as Games;
     this.game = [Games.Loto, Games.EuroMillion].includes(game) ? game : Games.Loto;

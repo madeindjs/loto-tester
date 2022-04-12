@@ -19,13 +19,19 @@ export interface GameResult {
   extras: number[];
 }
 
+export interface GameResultComputed {
+  date: Date;
+  boules: number[];
+  extras: number[];
+}
+
 export interface GameGraphData {
   x: Date;
   y: number;
 }
 
 export interface GameWin {
-  result: GameResult;
+  result: GameResultComputed;
   missingBoules: number[];
   missingExtras: number[];
   money: number;

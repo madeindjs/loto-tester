@@ -1,16 +1,12 @@
 import { GAME_CONFIGURATION } from '../games.conf';
-import { GameGraphData, GameResult, Games, GameWin } from '../models';
+import { GameGraphData, GameResultComputed, Games, GameWin } from '../models';
 
 export async function computeGameWins(
-  gamePath: string,
+  gameResults: GameResultComputed[],
   boules: number[],
   extras: number[],
   game: Games,
 ): Promise<{ results: GameWin[]; points: GameGraphData[]; money: number; firstDate: Date; lastDate: Date }> {
-  const res = await fetch(gamePath);
-  const gameResults: GameResult[] = await res.json();
-  gameResults.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-
   const computeMoney = GAME_CONFIGURATION[game].computeWin;
 
   this.gameResults = gameResults;
