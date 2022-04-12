@@ -88,7 +88,7 @@ export class AppRoot implements ComponentInterface {
 
         <main class="container-fluid">
           <h1>
-            Aurai-je gagné au <strong>{this.game.toLocaleUpperCase()}</strong> <i>(bordel)</i>?!
+            Aurais-je gagné au <strong>{this.game.toLocaleUpperCase()}</strong> <i>(bordel)</i>?!
           </h1>
           <app-game-selector value={this.game} onUpdate={e => this.onGameChange(e)} />
           <div class="grid">
