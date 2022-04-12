@@ -7,7 +7,7 @@ export async function computeGameWins(
   extras: number[],
   game: Games,
 ): Promise<{ results: GameWin[]; points: GameGraphData[]; money: number; firstDate: Date; lastDate: Date }> {
-  const computeMoney = GAME_CONFIGURATION[game].computeWin;
+  const { computeWin, price } = GAME_CONFIGURATION[game];
 
   this.gameResults = gameResults;
 
@@ -22,13 +22,13 @@ export async function computeGameWins(
     const extrasMatch = gameResult.extras.filter(b => extras.includes(b));
     const missingExtras = gameResult.extras.filter(b => !extrasMatch.includes(b));
 
-    const moneyWin = computeMoney(boulesMatch.length, extrasMatch.length);
+    const moneyWin = computeWin(boulesMatch.length, extrasMatch.length);
 
     if (moneyWin > 100) {
       results.push({ result: gameResult, missingBoules, missingExtras, money: moneyWin });
     }
 
-    money -= 2;
+    money -= price;
     money += moneyWin;
 
     points.push({ x: new Date(gameResult.date), y: money });

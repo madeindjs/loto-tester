@@ -2,6 +2,7 @@ import { GameConfiguration, Games } from './models';
 
 export const GAME_CONFIGURATION: Record<Games, GameConfiguration> = {
   [Games.Loto]: {
+    price: 2.2,
     nbBoules: 5,
     nbExtras: 1,
     nbMaxBoules: 49,
@@ -40,6 +41,7 @@ export const GAME_CONFIGURATION: Record<Games, GameConfiguration> = {
     },
   },
   [Games.EuroMillion]: {
+    price: 2.5,
     nbBoules: 5,
     nbExtras: 2,
     nbMaxBoules: 49,

@@ -11,6 +11,7 @@ export interface GameConfiguration {
   nbMaxBoules: number;
   nbMaxExtras: number;
   computeWin: GameComputeMoney;
+  price: number;
 }
 
 export interface GameResult {

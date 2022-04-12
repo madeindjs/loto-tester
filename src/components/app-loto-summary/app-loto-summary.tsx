@@ -16,6 +16,7 @@ export class AppLotoSummary implements ComponentInterface {
   @Prop() nbMaxBoules: number;
   @Prop() nbMaxExtras: number;
   @Prop() gameComputeWin: GameComputeMoney;
+  @Prop() price: number;
 
   @Event() bouleDelete: EventEmitter<number>;
   @Event() extraDelete: EventEmitter<number>;
@@ -75,7 +76,7 @@ export class AppLotoSummary implements ComponentInterface {
         </div>
 
         <p>
-          En ayant joué {formatMoney(2)} de {formatDate(this.firstDate)} à {formatDate(this.lastDate)}, <br />
+          En ayant joué {formatMoney(this.price)} de {formatDate(this.firstDate)} à {formatDate(this.lastDate)}, <br />
           <strong>votre solde final serait de {formatMoney(this.money)}</strong>.
         </p>
 

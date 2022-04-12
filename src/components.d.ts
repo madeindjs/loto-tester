@@ -32,6 +32,7 @@ export namespace Components {
         "gameComputeWin": GameComputeMoney;
         "nbMaxBoules": number;
         "nbMaxExtras": number;
+        "price": number;
     }
     interface AppLotoSummaryGraph {
         "points": GameGraphData[];
@@ -118,6 +119,7 @@ declare namespace LocalJSX {
         "onBouleDelete"?: (event: CustomEvent<number>) => void;
         "onExtraDelete"?: (event: CustomEvent<number>) => void;
         "onTryNumbers"?: (event: CustomEvent<{ boules: number[]; extras: number[] }>) => void;
+        "price"?: number;
     }
     interface AppLotoSummaryGraph {
         "points"?: GameGraphData[];
