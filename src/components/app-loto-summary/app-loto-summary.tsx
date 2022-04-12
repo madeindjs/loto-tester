@@ -55,15 +55,12 @@ export class AppLotoSummary implements ComponentInterface {
   }
 
   render() {
-    if (this.loading) {
-      return <p aria-busy="true">Chargement des données pour {this.game}</p>;
-    }
     if (!this.game) {
       return <p>Sélectionnez un type de jeu</p>;
     }
 
     return (
-      <div class="loto-summary">
+      <div class="loto-summary" aria-busy={this.loading}>
         <div class="loto-summary__title grid">
           <h2>Résultat</h2>
 
