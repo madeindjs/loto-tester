@@ -82,13 +82,24 @@ export class AppRoot implements ComponentInterface {
   render() {
     return (
       <div>
-        <header></header>
+        <header class="container-fluid">
+          <nav>
+            <ul>
+              <li class="title">
+                <strong>
+                  Aurais-je gagné à la loterie <small>(bordel)</small>?!
+                </strong>
+              </li>
+            </ul>
+            <app-game-selector-nav value={this.game} onUpdate={e => this.onGameChange(e)} />
+          </nav>
+        </header>
 
         <main class="container">
           <h1>
-            Aurais-je gagné au <strong>{this.game.toLocaleUpperCase()}</strong> <i>(bordel)</i>?!
+            Aurais-je gagné à la loterie <small>(bordel)</small>?!
           </h1>
-          <app-game-selector value={this.game} onUpdate={e => this.onGameChange(e)} />
+          {/* <app-game-selector value={this.game} onUpdate={e => this.onGameChange(e)} /> */}
           <div class="grid">
             <div class="form">
               <h2>Votre jeu</h2>
@@ -119,7 +130,11 @@ export class AppRoot implements ComponentInterface {
 
           {/* TODO: add share */}
         </main>
-        {/* TODO: add footer */}
+        <footer class="container-fluid">
+          <p>
+            Développé en <a href="github.com/madeindjs/loto-tester">Open Source</a> avec 💙 par <a href="https://rsseau.fr">Alexandre</a>.
+          </p>
+        </footer>
       </div>
     );
   }

@@ -18,6 +18,9 @@ export namespace Components {
     interface AppGameSelector {
         "value": Games;
     }
+    interface AppGameSelectorNav {
+        "value": Games;
+    }
     interface AppLotoForm {
         "boules": number[];
         "extras": number[];
@@ -53,6 +56,12 @@ declare global {
         prototype: HTMLAppGameSelectorElement;
         new (): HTMLAppGameSelectorElement;
     };
+    interface HTMLAppGameSelectorNavElement extends Components.AppGameSelectorNav, HTMLStencilElement {
+    }
+    var HTMLAppGameSelectorNavElement: {
+        prototype: HTMLAppGameSelectorNavElement;
+        new (): HTMLAppGameSelectorNavElement;
+    };
     interface HTMLAppLotoFormElement extends Components.AppLotoForm, HTMLStencilElement {
     }
     var HTMLAppLotoFormElement: {
@@ -80,6 +89,7 @@ declare global {
     interface HTMLElementTagNameMap {
         "app-boule": HTMLAppBouleElement;
         "app-game-selector": HTMLAppGameSelectorElement;
+        "app-game-selector-nav": HTMLAppGameSelectorNavElement;
         "app-loto-form": HTMLAppLotoFormElement;
         "app-loto-summary": HTMLAppLotoSummaryElement;
         "app-loto-summary-graph": HTMLAppLotoSummaryGraphElement;
@@ -97,6 +107,10 @@ declare namespace LocalJSX {
         "onToggle"?: (event: CustomEvent<void>) => void;
     }
     interface AppGameSelector {
+        "onUpdate"?: (event: CustomEvent<Games>) => void;
+        "value"?: Games;
+    }
+    interface AppGameSelectorNav {
         "onUpdate"?: (event: CustomEvent<Games>) => void;
         "value"?: Games;
     }
@@ -129,6 +143,7 @@ declare namespace LocalJSX {
     interface IntrinsicElements {
         "app-boule": AppBoule;
         "app-game-selector": AppGameSelector;
+        "app-game-selector-nav": AppGameSelectorNav;
         "app-loto-form": AppLotoForm;
         "app-loto-summary": AppLotoSummary;
         "app-loto-summary-graph": AppLotoSummaryGraph;
@@ -141,6 +156,7 @@ declare module "@stencil/core" {
         interface IntrinsicElements {
             "app-boule": LocalJSX.AppBoule & JSXBase.HTMLAttributes<HTMLAppBouleElement>;
             "app-game-selector": LocalJSX.AppGameSelector & JSXBase.HTMLAttributes<HTMLAppGameSelectorElement>;
+            "app-game-selector-nav": LocalJSX.AppGameSelectorNav & JSXBase.HTMLAttributes<HTMLAppGameSelectorNavElement>;
             "app-loto-form": LocalJSX.AppLotoForm & JSXBase.HTMLAttributes<HTMLAppLotoFormElement>;
             "app-loto-summary": LocalJSX.AppLotoSummary & JSXBase.HTMLAttributes<HTMLAppLotoSummaryElement>;
             "app-loto-summary-graph": LocalJSX.AppLotoSummaryGraph & JSXBase.HTMLAttributes<HTMLAppLotoSummaryGraphElement>;
