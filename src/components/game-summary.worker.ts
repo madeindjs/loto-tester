@@ -37,7 +37,7 @@ export async function computeGameWins(
   results.sort((a, b) => new Date(b.result.date).getTime() - new Date(a.result.date).getTime());
 
   const firstDate = new Date(gameResults[0]?.date);
-  const lastDate = new Date(gameResults[0]?.date);
+  const lastDate = new Date(gameResults[-1]?.date);
 
   return { results, points, money, firstDate: !isNaN(firstDate.valueOf()) ? firstDate : undefined, lastDate: !isNaN(lastDate.valueOf()) ? firstDate : undefined };
 }
