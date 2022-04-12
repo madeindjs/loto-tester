@@ -5,10 +5,15 @@ button.app-boule {
   background-color: white;
   /* box-shadow: 0 5px 10px 0 hsla(0, 0%, 74.9%, 0.5); */
 
-  height: 2rem;
-  width: 2rem;
+  height: 2.5rem;
+  width: 2.5rem;
 
   cursor: pointer;
+}
+
+button.app-boule.compact {
+  height: 1.5rem;
+  width: 1.5rem;
 }
 
 button.app-boule.disabled {

@@ -48,8 +48,10 @@ export const GAME_CONFIGURATION: Record<Games, GameConfiguration> = {
     nbMaxExtras: 9,
     // https://tirage-gagnant.com/loto/calculateur-de-gains-loto/
     computeWin: (nbBoulesMatch: number, nbExtrasMatches: number) => {
-      if (nbBoulesMatch === 5 && nbExtrasMatches === 1) {
-        return 2_000_000;
+      if (nbBoulesMatch === 5 && nbExtrasMatches === 2) {
+        return 17_000_000;
+      } else if (nbBoulesMatch === 5 && nbExtrasMatches === 1) {
+        return 200_000;
       } else if (nbBoulesMatch === 5 && nbExtrasMatches === 0) {
         return 100_000;
       } else if (nbBoulesMatch === 4 && nbExtrasMatches === 1) {

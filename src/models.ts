@@ -45,4 +45,5 @@ export interface GameSummary {
   firstDate: Date;
   lastDate: Date;
   nbTries: number;
+  closestResult: GameWin;
 }

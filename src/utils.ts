@@ -5,5 +5,5 @@ export function formatDate(date: string | Date | undefined): string {
 }
 
 export function formatMoney(date: string | number): string {
-  return Intl.NumberFormat(undefined, { currency: 'EUR', style: 'currency' }).format(Number(date));
+  return Intl.NumberFormat(undefined, { currency: 'EUR', style: 'currency', maximumFractionDigits: 0 }).format(Number(date));
 }

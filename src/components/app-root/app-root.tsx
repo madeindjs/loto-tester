@@ -92,6 +92,7 @@ export class AppRoot implements ComponentInterface {
           <div class="grid">
             <div class="form">
               <h2>Votre jeu</h2>
+              <p>Cliquez sur les numéros pour les jouer</p>
               <app-loto-form
                 boules={this.boules}
                 extras={this.extras}

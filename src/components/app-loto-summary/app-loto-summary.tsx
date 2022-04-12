@@ -27,6 +27,7 @@ export class AppLotoSummary implements ComponentInterface {
 
   @State() money: number;
   @State() gameWins: GameWin[];
+  @State() closestWin: GameWin;
   @State() points: GameGraphData[];
   @State() firstDate: Date;
   @State() lastDate: Date;
@@ -52,6 +53,7 @@ export class AppLotoSummary implements ComponentInterface {
     this.firstDate = data.firstDate;
     this.lastDate = data.lastDate;
     this.nbTries = data.nbTries;
+    this.closestWin = data.closestResult;
 
     this.loading = false;
   }
@@ -67,10 +69,10 @@ export class AppLotoSummary implements ComponentInterface {
           <h2>Résultat {this.money > 0 ? '💸' : '😭'}</h2>
           <div class="boules">
             {this.boules.map(boule => (
-              <app-boule boule number={boule} onToggle={() => this.bouleDelete.emit(boule)} checked />
+              <app-boule boule number={boule} onToggle={() => this.bouleDelete.emit(boule)} checked compact />
             ))}
             {this.extras.map(extra => (
-              <app-boule extra number={extra} onToggle={() => this.extraDelete.emit(extra)} checked />
+              <app-boule extra number={extra} onToggle={() => this.extraDelete.emit(extra)} checked compact />
             ))}
           </div>
         </hgroup>
@@ -97,10 +99,10 @@ export class AppLotoSummary implements ComponentInterface {
                     <td class="game-win__date">{formatDate(gameWin.result.date)}</td>
                     <td class="boules">
                       {gameWin.result.boules.map(boule => (
-                        <app-boule boule number={boule} disabled checked={!gameWin.missingBoules.includes(boule)} />
+                        <app-boule boule number={boule} disabled checked={!gameWin.missingBoules.includes(boule)} compact />
                       ))}
                       {gameWin.result.extras.map(extra => (
-                        <app-boule extra number={extra} disabled checked={!gameWin.missingExtras.includes(extra)} />
+                        <app-boule extra number={extra} disabled checked={!gameWin.missingExtras.includes(extra)} compact />
                       ))}
                     </td>
                     <td>{formatMoney(gameWin.money)}</td>
@@ -117,6 +119,25 @@ export class AppLotoSummary implements ComponentInterface {
         <p>Et un joli graphique plus parlant:</p>
 
         <app-loto-summary-graph points={this.points} />
+
+        {this.closestWin !== undefined && (
+          <div class="closest-result">
+            <p>
+              Sans rancune, vous n'êtes pas passé pas loin le {formatDate(this.closestWin.result.date)} ou vous auriez gagné {formatMoney(this.closestWin.money)}
+            </p>
+            <div class="boules">
+              {this.closestWin.result.boules.map(boule => (
+                <app-boule boule number={boule} checked={!this.closestWin.missingBoules.includes(boule)} disabled compact />
+              ))}
+              {this.extras.map(extra => (
+                <app-boule extra number={extra} checked={!this.closestWin.missingExtras.includes(extra)} disabled compact />
+              ))}
+            </div>
+            <button class="secondary outline" onClick={() => this.tryNumbers.emit({ boules: this.closestWin.result.boules, extras: this.closestWin.result.extras })}>
+              Tester cette 🤬 de combinaison
+            </button>
+          </div>
+        )}
       </div>
     );
   }

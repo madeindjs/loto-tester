@@ -9,6 +9,7 @@ export class AppBoule implements ComponentInterface {
   @Prop() number: number;
   @Prop() checked: boolean = false;
   @Prop() disabled: boolean = false;
+  @Prop() compact: boolean = false;
 
   @Prop() boule: boolean;
   @Prop() extra: boolean;
@@ -17,7 +18,10 @@ export class AppBoule implements ComponentInterface {
 
   render() {
     return (
-      <button class={{ 'app-boule': true, 'checked': this.checked, 'boule': this.boule, 'extra': this.extra, 'disabled': this.disabled }} onClick={() => this.toggle.emit()}>
+      <button
+        class={{ 'app-boule': true, 'checked': this.checked, 'boule': this.boule, 'extra': this.extra, 'disabled': this.disabled, 'compact': this.compact }}
+        onClick={() => this.toggle.emit()}
+      >
         {this.number}
       </button>
     );

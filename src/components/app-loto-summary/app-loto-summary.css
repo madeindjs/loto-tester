@@ -18,3 +18,7 @@
   gap: 1rem;
   padding: 0;
 }
+
+.closest-result button {
+  margin-top: 1rem;
+}

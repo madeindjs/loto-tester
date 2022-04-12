@@ -10,6 +10,7 @@ export namespace Components {
     interface AppBoule {
         "boule": boolean;
         "checked": boolean;
+        "compact": boolean;
         "disabled": boolean;
         "extra": boolean;
         "number": number;
@@ -89,6 +90,7 @@ declare namespace LocalJSX {
     interface AppBoule {
         "boule"?: boolean;
         "checked"?: boolean;
+        "compact"?: boolean;
         "disabled"?: boolean;
         "extra"?: boolean;
         "number"?: number;
