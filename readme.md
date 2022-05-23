@@ -2,7 +2,11 @@
 
 Une application web qui permet de tester une combinaison de loterie sur les dernière années et de voir les gains.
 
-![Capture d'écran de l'application](https://user-images.githubusercontent.com/11815139/169897777-2971db39-5951-4c65-aa30-95de220c0238.png)
+## Capture d'écran
+
+| Avec une combinaison gagante | Sans combinaison gagnate |
+|------------------------------|--------------------------|
+| ![Capture d'écran de l'application](https://user-images.githubusercontent.com/11815139/169897777-2971db39-5951-4c65-aa30-95de220c0238.png) | ![Capture d'écran de l'application](https://user-images.githubusercontent.com/11815139/169898249-6783e504-6f5c-4417-894c-5c09f3d79759.png) |
 
 
 ## Getting Started
